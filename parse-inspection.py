@@ -1,4 +1,4 @@
-import json, pandas, os
+import json, pandas, os, sys
 
 """
 Main parsing function for inspection-log.ndjson
@@ -116,19 +116,38 @@ def safe_fetch(dict, key):
 
 #Test
 if __name__=="__main__":
-    opDf, filterDf, cookieDf = parse_inspection('phoenix.edu', 'iPhone4')
-    diff = opDf[opDf['operation'] =='get']
-    print(diff.head(5))
-    print('\n')
-    print('\n')
-    diff = opDf[opDf['operation'] =='call']
-    print(diff.head(5))
-    print('\n')
-    print('\n')
-    print(opDf.operation.value_counts())
-    print('\n')
-    print('\n')
-    print(filterDf.head(5))
-    print('\n')
-    print('\n')
-    print(cookieDf.head(5))
+    args = sys.argv
+    try:
+        opDf, filterDf, cookieDf = parse_inspection(args[1], args[2])
+        diff = opDf[opDf['operation'] =='get']
+        print(diff.head(5))
+        print('\n')
+        print('\n')
+        diff = opDf[opDf['operation'] =='call']
+        print(diff.head(5))
+        print('\n')
+        print('\n')
+        print(opDf.operation.value_counts())
+        print('\n')
+        print('\n')
+        print(filterDf.head(5))
+        print('\n')
+        print('\n')
+        print(cookieDf.head(5))
+    except:
+        opDf, filterDf, cookieDf = parse_inspection('phoenix.edu', 'iPhone4')
+        diff = opDf[opDf['operation'] =='get']
+        print(diff.head(5))
+        print('\n')
+        print('\n')
+        diff = opDf[opDf['operation'] =='call']
+        print(diff.head(5))
+        print('\n')
+        print('\n')
+        print(opDf.operation.value_counts())
+        print('\n')
+        print('\n')
+        print(filterDf.head(5))
+        print('\n')
+        print('\n')
+        print(cookieDf.head(5))
