@@ -1,4 +1,5 @@
 import json, pandas, os, sys
+from numpy.core.numeric import NaN
 
 """
 Main parsing function for inspection-log.ndjson
@@ -11,7 +12,7 @@ device(str): chosen device directory to pull site data from
 def parse_inspection(site, device):
     #Load our data
     filename="inspection-log.ndjson"
-    dir_ = os.getcwd() + f"/data/{site}/{device}"
+    dir_ = os.getcwd() + f"/blacklight-collector/data/{site}/{device}"
     dir_ = r'{}'.format(dir_)
 
     #Instantiate accumulators
@@ -117,37 +118,6 @@ def safe_fetch(dict, key):
 #Test
 if __name__=="__main__":
     args = sys.argv
-    try:
-        opDf, filterDf, cookieDf = parse_inspection(args[1], args[2])
-        diff = opDf[opDf['operation'] =='get']
-        print(diff.head(5))
-        print('\n')
-        print('\n')
-        diff = opDf[opDf['operation'] =='call']
-        print(diff.head(5))
-        print('\n')
-        print('\n')
-        print(opDf.operation.value_counts())
-        print('\n')
-        print('\n')
-        print(filterDf.head(5))
-        print('\n')
-        print('\n')
-        print(cookieDf.head(5))
-    except:
-        opDf, filterDf, cookieDf = parse_inspection('phoenix.edu', 'iPhone4')
-        diff = opDf[opDf['operation'] =='get']
-        print(diff.head(5))
-        print('\n')
-        print('\n')
-        diff = opDf[opDf['operation'] =='call']
-        print(diff.head(5))
-        print('\n')
-        print('\n')
-        print(opDf.operation.value_counts())
-        print('\n')
-        print('\n')
-        print(filterDf.head(5))
-        print('\n')
-        print('\n')
-        print(cookieDf.head(5))
+    opDf, filterDf, cookieDf = parse_inspection('phoenix.edu', 'iPhone4')
+    geolocationDf = opDf[opDf['funcSource'].str.contains('geolocation', na=False, case=False)]
+    print(geolocationDf.head()['funcSource'].values)    

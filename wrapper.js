@@ -1,41 +1,29 @@
 
 const { collector } = require("./build");
 const { join } = require("path");
-const fs = require('fs');
 
-const URLS = []
+const URLS = [];
 const args = process.argv.slice(2);
+let chosenDevice = null;
 for (const a of args){
-    URLS.push(a);
-}
-
-const devices = [false, "iPhone 4", "iPhone 5", "iPhone 6", "iPhone 7", "iPhone 8", "iPhone X", "Galaxy S III", 
-"Galaxy S5", "iPad", "iPad Mini", "iPad Pro", "Kindle Fire HDX", "Nexus 5", "Nexus 6", "Nexus 10"];
-
-for (const u of URLS){
-    fs.mkdir(join(__dirname, "data", u), (err) => {
-        if (err) {
-            return console.error(err);
-        }
-        //console.log('Directory created successfully!');
-    });
-    for (const d of devices){
-        let devPath;
-        if (!d){
-            devPath = "Native"
-        }
-        else{
-            var s = "" + d;
-            devPath = s.replace(/ /g, '')
-        }
-        fs.mkdir(join(__dirname, "data", u, devPath), (err) => {
-            if (err) {
-                return console.error(err);
-            }
-            //console.log('Directory created successfully!');
-        });
+    if (String(a).includes('-device=')){
+        chosenDevice = a.slice(8);
+    }
+    else{
+        URLS.push(a);
     }
 }
+
+let devices = []
+
+if (chosenDevice == null){
+    devices = [false, "iPhone 4", "iPhone 5", "iPhone 6", "iPhone 7", "iPhone 8", "iPhone X", "Galaxy S III", 
+    "Galaxy S5", "iPad", "iPad Mini", "iPad Pro", "Kindle Fire HDX", "Nexus 5", "Nexus 6", "Nexus 10"];
+}
+else{
+    devices = [chosenDevice.replace('_', ' ')];
+}
+
 
     (async () => {
         for (const u of URLS){
