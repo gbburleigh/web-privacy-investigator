@@ -12,7 +12,7 @@ device(str): chosen device directory to pull site data from
 def parse_inspection(site, device):
     #Load our data
     filename="inspection-log.ndjson"
-    dir_ = os.getcwd() + f"/blacklight-collector/data/{site}/{device}"
+    dir_ = os.getcwd() + f"/data/{site}/{device}"
     dir_ = r'{}'.format(dir_)
 
     #Instantiate accumulators
